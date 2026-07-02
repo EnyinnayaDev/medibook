@@ -7,4 +7,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='scheduler/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('services/', views.service_list, name='service_list'),
+    path('doctors/', views.doctor_list, name='doctor_list'),
 ]
