@@ -2,6 +2,7 @@
 {% block title %}Our Services — MediBook{% endblock %}
 {% block content %}
 <h2 class="mb-4 text-success-emphasis">Our Services</h2>
+<a class="btn btn-success mb-3" href="{% url 'book_appointment' %}">Book an Appointment</a>
 {% if services %}
     <div class="row g-3">
         {% for service in services %}

@@ -19,11 +19,12 @@
                         <span class="badge
                             {% if appt.status == 'pending' %}bg-warning text-dark
                             {% elif appt.status == 'confirmed' %}bg-success
+                            {% elif appt.status == 'completed' %}bg-primary
                             {% else %}bg-secondary{% endif %}">
                             {{ appt.get_status_display }}
                         </span>
                     </div>
-                    {% if appt.status != 'cancelled' %}
+                    {% if appt.status == 'pending' or appt.status == 'confirmed' %}
                         <form method="post" action="{% url 'cancel_appointment' appt.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger btn-sm"
