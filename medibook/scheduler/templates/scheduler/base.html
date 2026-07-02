@@ -23,6 +23,9 @@
                 {% endif %}
                 <a class="nav-link me-3" href="{% url 'service_list' %}">Services</a>
                 <a class="nav-link me-3" href="{% url 'doctor_list' %}">Doctors</a>
+                {% if user.is_authenticated %}
+                    <a class="nav-link me-3" href="{% url 'book_appointment' %}">Book Appointment</a>
+                {% endif %}
             </div>
         </div>
     </nav>
