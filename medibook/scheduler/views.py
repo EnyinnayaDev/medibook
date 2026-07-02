@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
 from .forms import PatientRegisterForm, AppointmentForm
 from .models import Service, Doctor, Appointment
+from django.utils import timezone
 
 def home(request):
     return render(request, 'scheduler/home.html')
@@ -39,3 +42,24 @@ def book_appointment(request):
     else:
         form = AppointmentForm()
     return render(request, 'scheduler/book_appointment.html', {'form': form})
+
+@login_required
+def my_appointments(request):
+    appointments = Appointment.objects.filter(patient=request.user)
+    return render(request, 'scheduler/my_appointments.html', {'appointments': appointments})
+
+
+@login_required
+def cancel_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id, patient=request.user)
+
+    if appointment.status == 'cancelled':
+        messages.info(request, "This appointment is already cancelled.")
+    elif appointment.date < timezone.localdate():
+        messages.error(request, "You can't cancel a past appointment.")
+    else:
+        appointment.status = 'cancelled'
+        appointment.save()
+        messages.success(request, "Appointment cancelled successfully.")
+
+    return redirect('my_appointments')
